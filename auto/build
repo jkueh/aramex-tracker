@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+function buildApp() {
+  HAS_ERRORS="false"
+  if [ -z ${1// } ]; then
+    >&2 echo "buildApp - Parameter 1 (GOOS) must be supplied"
+    HAS_ERRORS="true"
+  fi
+  if [ -z ${2// } ]; then
+    >&2 echo "buildApp - Parameter 2 (GOARCH) must be supplied"
+    HAS_ERRORS="true"
+  fi
+  [ "${HAS_ERRORS}" != "false" ] && return 1
+  GOOS="${1}" \
+  GOARCH="${2}" \
+  go build -o "aramex-tracker_${1}_${2}"
+}
+
+buildApp linux 386
+buildApp linux amd64
+buildApp linux arm
+buildApp linux arm64
+buildApp linux mips64
+buildApp darwin amd64
